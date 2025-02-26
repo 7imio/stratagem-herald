@@ -22,16 +22,16 @@ const Header: React.FC = () => {
   }, [isDarkTheme]);
 
   return (
-    <header className="flex flex-row sticky w-full top-0 h-15 bg-gray-200 dark:bg-gray-800">
-      <div className="flex border-2 w-1/4 border-black dark:border-white justify-center content-center align-middle">
+    <header className="flex flex-row w-full bg-background border-primary text-primary sticky bottom-0 h-20">
+      <div className="flex border-2 w-1/4 h-full justify-center content-center align-middle">
         <p>Options</p>
       </div>
-      <div className="flex border-2 w-1/2 border-black dark:border-white justify-center content-center align-middle">
+      <div className="flex border-2 w-1/2 h-full justify-center content-center align-middle">
         <p>Title</p>
       </div>
-      <div className="flex border-2 w-1/4 border-black dark:border-white justify-center content-center align-middle">
+      <div className="flex border-2 w-1/4 h-full justify-center content-center align-middle">
         <button
-          className="border-2 p-1 bg-gray-300 dark:bg-gray-700 rounded-full"
+          className="border-2 p-1 rounded-full"
           onClick={handleSwitchTheme}
         >
           {isDarkTheme ? <Moon /> : <Sun />}
