@@ -1,10 +1,10 @@
 const Content: React.FC = () => {
   return (
-    <div>
-      {Array.from({ length: 100 }).map(() => (
+    <div className="h-fit">
+      {Array.from({ length: 10 }).map(() => (
         <div>Hello World</div>
       ))}
-      ;
+      ZAKAROUME
     </div>
   );
 };

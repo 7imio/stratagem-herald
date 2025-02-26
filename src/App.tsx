@@ -4,7 +4,7 @@ import Content from "./Components/Layout/Content/Content";
 
 function App() {
   return (
-    <div className="min-h-screen min-w-full flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="h-screen w-screen flex flex-col bg-background text-primary overflow-hidden">
       <Header />
       <Content />
       <Footer />

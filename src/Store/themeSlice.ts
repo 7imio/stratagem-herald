@@ -19,7 +19,9 @@ const storeSlice: CreateSliceOptions<
   reducers: {
     switchTheme: (state) => {
       state.isDarkTheme = !state.isDarkTheme;
+      // save theme in local storage
     },
+    // retrieve theme from local storage
   },
 };
 
