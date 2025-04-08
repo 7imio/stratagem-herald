@@ -1,11 +1,7 @@
-import {
-  ArrowBigDown,
-  ArrowBigLeft,
-  ArrowBigRight,
-  ArrowBigUp,
-} from "lucide-react";
-import { CodeDirection, Stratagem } from "../../Interfaces/Stratagem";
 import { useEffect, useState } from "react";
+import { CodeDirection, Stratagem } from "../../Interfaces/Stratagem";
+import { handleKeyPress } from '../helpers/keyboardHelper';
+import CharcodeToArrow from './CharcodeToArrow';
 
 interface StratagemCardProps {
   stratagem: Stratagem;
@@ -20,65 +16,51 @@ const StratagemCard: React.FC<StratagemCardProps> = ({
   const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("useEffect input");
-    document.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (handleCheckIfArrowPressed(e)) {
-        setInputs([...inputs, handleKeyPress(e)]);
-        if (inputs === stratagem.code) {
-          setIsGood(true);
-        }
-      }
-    });
-    return () => document.removeEventListener("keydown", handleKeyPress);
-  }, [inputs, stratagem.code]);
+    console.log("useEffect inputs", useEffectInputCount);
+    console.log(inputs);
 
-  useEffect(() => {
-    console.log("useEffect isError");
-    if (isError) {
-      setIsError(false);
-      setInputs([]);
-    }
-  }, [isError]);
+    document.addEventListener("keydown", handleStratagemInput);
 
-  const handleKeyPress = (e: KeyboardEvent): CodeDirection => {
-    switch (e.key) {
-      case "ArrowLeft":
-        return CodeDirection.LEFT;
-      case "ArrowRight":
-        return CodeDirection.RIGHT;
-      case "ArrowUp":
-        return CodeDirection.UP;
-      case "ArrowDown":
-        return CodeDirection.DOWN;
-      default:
-        throw new Error("not a good input");
-    }
-  };
 
-  const handleCheckIfArrowPressed = (e: KeyboardEvent): boolean => {
-    switch (e.key) {
-      case "ArrowLeft":
-      case "ArrowRight":
-      case "ArrowUp":
-      case "ArrowDown":
-        return true;
-      default:
-        return false;
+    return () => {
+      document.removeEventListener("keydown", handleStratagemInput);
     }
-  };
+    
+  }, [inputs]);
+
+const handleStratagemInput = (e:KeyboardEvent) => {
+const currentInput = (handleKeyPress(e));  
+const currentStratagemCode = stratagem.code[inputs.length]; // get the current code arrow to check with the current input
+  if (isCurrentInputValid(currentInput, currentStratagemCode)){
+    setInputs((prev)=>[...prev, currentInput]); // add the current input to the inputs array
+  }
+
+}
+  
+
+/**
+ * 
+ * increment input once
+ * check if input match stratagem current code arrow (check with index ? or an optimised better solution ?)
+ * if yes, check if all inputs are correct
+ * if no, set isError to true
+ * wipe inputs with a 1s delay an set isError to false
+ * 
+ * if all inputs are correct, set isGood to true and wipe inputs
+ * 
+ */
+
+  const isCurrentInputValid = (currentStratagemInput: CodeDirection, currentStratagemCode:CodeDirection):boolean => {
+    if (currentStratagemInput !== currentStratagemCode) {
+      setIsError(true);
+      return false;
+    }
+    return true;
+  }
 
   const handleChangeCharcodeToArrows = (code: CodeDirection[]) => {
-    return code?.map((char) => {
-      switch (char) {
-        case CodeDirection.UP:
-          return <ArrowBigUp size={46} />;
-        case CodeDirection.DOWN:
-          return <ArrowBigDown size={46} />;
-        case CodeDirection.LEFT:
-          return <ArrowBigLeft size={46} />;
-        case CodeDirection.RIGHT:
-          return <ArrowBigRight size={46} />;
-      }
+    return code?.map((char, index) => {
+      return <CharcodeToArrow key={`${stratagem.name}-${index}`} char={(char)}/>;
     });
   };
 
